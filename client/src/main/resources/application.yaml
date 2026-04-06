@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: client
+persons:
+  name: persons
+  contextId: persons
+  url: http://localhost:8080

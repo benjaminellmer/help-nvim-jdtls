@@ -1,0 +1,13 @@
+[versions]
+openapi-generator = "7.21.0"
+springdoc = "2.8.14"
+jackson-databind-nullable = "0.2.6"
+spring-cloud = "5.0.1"
+
+[libraries]
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
+springdoc-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+spring-cloud-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud" }
+
+[plugins]
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator" }

@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: Server API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Local Server
+tags:
+  - name: Persons
+paths:
+  /persons:
+    get:
+      summary: Get Persons
+      operationId: getPersons
+      tags:
+        - Persons
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PersonDTO"
+components:
+  schemas:
+    PersonDTO:
+      type: object
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        name:
+          type: string
+        email:
+          type: string
+    Uuid:
+      type: string
+      format: uuid
+      description: Universally Unique Identifier

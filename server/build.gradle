@@ -1,0 +1,60 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+
+    alias(libs.plugins.openapi.generator)
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation(libs.springdoc.openapi)
+    implementation(libs.jackson.databind.nullable)
+
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+}
+
+var apiGenerateDir = "${project.layout.buildDirectory.asFile.get()}/generated/api"
+tasks.register('generateApi', GenerateTask) {
+    generatorName = 'spring'
+    inputSpec = "$rootDir/api-specs/api.yml"
+    outputDir = apiGenerateDir
+    apiPackage = 'com.example.server.generated.api'
+    modelPackage = 'com.example.server.generated.model'
+    artifacts {
+        id = 'api'
+        groupId = 'com.example.server.generated'
+    }
+    additionalProperties = [
+            interfaceOnly     : 'true',
+            useTags           : 'true',
+            useSpringBoot3    : 'true',
+            unhandledException: 'true'
+    ]
+}
+
+tasks.named('compileJava').configure {
+    dependsOn(tasks.named('generateApi'))
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir apiGenerateDir + "/src/main/java"
+        }
+    }
+}
